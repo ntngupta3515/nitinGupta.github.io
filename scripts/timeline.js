@@ -53,11 +53,13 @@ function initializeTimeline(color1 = "white", color2 = "#18202a") {
     let loadBarXPos = document.getElementById("timelineLoadBar").getBoundingClientRect().x
     let timelineSVGXPos = document.getElementById("timelineSVG").getBoundingClientRect().x
 
-    let toolTip = timeline.append("path")
+    let toolTip = timeline.append("g")
+        .attr("transform", `translate(${loadBarXPos - timelineSVGXPos + loadBarInitialWidth + timelineStrokeWidth}, ${timelineHeight + 4})`)
+
+    let toolTipBG = toolTip.append("path")
         .attr("fill", color1)
         .attr("stroke", "none")
         .attr("stroke-width", 0)
-        .attr("transform", `translate(${loadBarXPos - timelineSVGXPos + loadBarInitialWidth + timelineStrokeWidth}, ${timelineHeight + 4})`)
         .attr("d", `
             M 0 0
             L 10 10
