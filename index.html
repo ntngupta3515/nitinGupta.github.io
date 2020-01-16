@@ -1,10 +1,35 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Home</title>
+    <title>Nitin Gupta</title>
+    <link rel="stylesheet" href="style.css">
   </head>
+
   <body>
-    Hello World !
+    <div id = "backgroundDiv1"></div>
+    <div id = "backgroundDiv2"></div>
+
+    <!-- Top Fixed header -->
+    <div id = "topHeading">
+      <div id = topHeadingbg1></div>
+      <div id = topHeadingbg2></div>
+      <p id = "headingTitle">Nitin Gupta</p>
+      <div id = "changeThemeButton">Light Theme</div>
+    </div>
+
+    <div id = "middleMainDiv">
+      <div id = "mainMap"></div>&nbsp;
+      <div id = "timeline"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="./scripts/d3/d3.js"></script>
+    <script src="//d3js.org/topojson.v1.js"></script>
+    <script src="./scripts/loadTheMap.js"></script>
+    <script src="./scripts/timeline.js"></script>
+    <script src="./scripts/changeTheme.js"></script>
+    <script src="./scripts/mainScript.js"></script>
   </body>
+  
 </html>

@@ -1,0 +1,129 @@
+body {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    overflow-x: hidden;
+    font-size: 15px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+/* CHANGE THEME STYLING */
+#backgroundDiv1 {
+    background-color: #18202a;
+    width: 100%;
+    height: 100%;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    position: fixed;
+}
+
+#backgroundDiv2 {
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    transition-duration: 0.7s;
+    transform-origin: top left;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+}
+
+#topHeading {
+    position: fixed;
+    height: 80px;
+    width: 100%;
+    z-index: 100;
+    color: white;
+}
+
+#headingTitle {
+    position: fixed;
+    margin: auto;
+    padding: auto;
+    text-align: center;
+    left: calc(50% - 30px);
+    top: 30px;
+    font-size: 20px;
+}
+
+#topHeadingbg1 {
+    height: 100%;
+    width: 100%;
+    background-color: #18202a;
+    border-bottom: 1px solid white;
+}
+
+#topHeadingbg2 {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 100%;
+    top: 0px;
+    background-color: white;
+    border-bottom: 1px solid #18202a;
+    transition-duration: 0.7s;
+}
+
+#changeThemeButton {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 100px;
+    margin: 0 0 0 0;
+    background-color: white;
+    border-radius: 15px;
+    transition-duration: 0.3s;
+    border: 1px solid #18202a;
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px;
+    color: #18202a;
+    cursor: pointer;
+}
+
+#changeThemeButton:hover {
+    background-color: #18202a;
+    border: 1px solid white;
+    color: white;
+}
+
+
+
+
+/* MIDDLE DIV STYLING */
+#middleMainDiv {
+    margin: auto;
+    position: absolute;
+    top: 100px;
+    width: 100%;
+    height: 100%;
+}
+
+
+
+/* MAP STYLING */
+#mainMap {
+    height: 70%;
+    margin: auto;
+}
+
+#mainMapSVG {
+    width: 100%;
+    height: 100%;
+}
+
+
+
+
+/* TIMELINE STYLING */
+#timeline {
+    height: 100px;
+    margin: auto;
+    width: 50%;
+}
+
+#timelineSVG {
+    width: 100%;
+    height: 100%;
+}
