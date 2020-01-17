@@ -1,4 +1,4 @@
-function initializeMap(color1 = "white", color2 = "#18202a") {
+function initializeMap(color1 = "#18202a", color2 = "white") {
     d3.json("./data/us.geo.json").then(function(data) {
         drawMap(data, color1, color2)
     })
