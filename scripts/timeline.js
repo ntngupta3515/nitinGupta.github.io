@@ -23,6 +23,10 @@ function initializeTimeline(color1 = "white", color2 = "#18202a") {
         .attr("height", timelineHeight - timelineStrokeWidth)
         .attr("stroke-width", timelineStrokeWidth)
     
+    
+    let timelineRectBounding = document.getElementById("timelineRect").getBoundingClientRect()
+    let lastPercent = 80 - 80*(timelineStrokeWidth/2)/timelineRectBounding.width
+
     // List down all the major events of my life
     let relevantEvents = {
         "Born": ["Apr", 1995, "0%"],
@@ -35,21 +39,21 @@ function initializeTimeline(color1 = "white", color2 = "#18202a") {
         "Graduated from DTU": ["May", 2017, "45%"],
         "Data Engineer at UHG": ["July", 2017, "50%"],
         "Resigned from my job at UHG": ["July", 2019, "60%"],
-        "Pursuing Masters at ASU (Go Sundevils!!)": ["Aug", 2019, "62%"],
+        "Pursuing Masters at ASU": ["Aug", 2019, "62%"],
         "Summer Intern at Amazon": ["May", 2020, "72%"],
-        "Graduated from ASU": ["May", 2021, `calc(80% - ${timelineStrokeWidth/2})`]
+        "Graduated from ASU": ["May", 2021, `${lastPercent}%`]
     } // The percent should be at max 80
 
 
     // What is the current event of my life
-    let currentEvent = "Pursuing Masters at ASU (Go Sundevils!!)"
+    let currentEvent = "Pursuing Masters at ASU"
     //let totalNumberOfEvents = Object.keys(relevantEvents).length
     //let currentEventIndex = Object.keys(relevantEvents).indexOf(currentEvent)
 
     // Create the tooltip and ticks for the timeline
-    let toolTip = timeline.append("g")
     let ticksGroup = timeline.append("g")
-
+    let toolTip = timeline.append("g")
+    
     // initialize the load bar upto my current event
     let loadBar = timeline.append("rect")
         .attr("id", "timelineLoadBar")
@@ -87,23 +91,56 @@ function initializeTimeline(color1 = "white", color2 = "#18202a") {
     let toolTipText = toolTip.append("text")
         .text(currentEvent)
         .attr("fill", color2)
-        .style("font-size", 8)
+        .attr("transform", `translate(0, 30)`)
+        .style("font-size", 7)
         .attr("text-anchor", "middle")
         
 
     // Add a mouseover and mousemove functionality to the timeline
-    let timelineRectBounding = document.getElementById("timelineRect").getBoundingClientRect()
-
     timeline.on("mouseover", function() {
         let newWidth = d3.event.x - timelineRectBounding.x
         if(newWidth >= 0 && newWidth <= timelineRectBounding.width) {
+            
+            let currentPercent = newWidth*80/timelineRectBounding.width
+            let newText = ""
+            let oldEvent = ""
+            Object.keys(relevantEvents).forEach(event => {
+                let percent = parseFloat(relevantEvents[event][2].replace("%",".00"))
+                if(percent >= currentPercent) {
+                    newText = oldEvent
+                    return
+                }
+                else {
+                    oldEvent = event
+                }
+            });
+            toolTipText.text(newText)
+
             loadBar.transition().ease(d3.easeLinear).duration(50).attr("width", newWidth)
             toolTip.transition().ease(d3.easeLinear).duration(50).attr("transform", `translate(${loadBarXPos - timelineSVGXPos + newWidth + timelineStrokeWidth}, ${timelineHeight + 8})`)
         }
     })
     .on("mousemove", function() {
         let newWidth = d3.event.x - timelineRectBounding.x
+
         if(newWidth >= 0 && newWidth <= timelineRectBounding.width) {
+
+            let currentPercent = newWidth*80/timelineRectBounding.width
+            console.log(currentPercent)
+            let newText = ""
+            let oldEvent = ""
+            Object.keys(relevantEvents).forEach(event => {
+                let percent = parseFloat(relevantEvents[event][2].replace("%",".00"))
+                if(percent >= currentPercent) {
+                    newText = oldEvent
+                    return
+                }
+                else {
+                    oldEvent = event
+                }
+            });
+            toolTipText.text(newText)
+
             loadBar.attr("width", newWidth)
             toolTip.transition().ease(d3.easeLinear).duration(50).attr("transform", `translate(${loadBarXPos - timelineSVGXPos + newWidth + timelineStrokeWidth}, ${timelineHeight + 8})`)
         }
