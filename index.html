@@ -19,7 +19,11 @@
     </div>
 
     <div id = "middleMainDiv">
-      <div id = "mainMap"></div>&nbsp;
+      <div id = "mainMap">
+        <svg id = 'mainMapSVG'>
+          <g></g>
+        </svg>
+      </div>&nbsp;
     </div>
 
     <div id = "footer">
@@ -28,9 +32,11 @@
 
     <!-- Scripts -->
     <script src="./scripts/d3/d3.js"></script>
-    <script src="//d3js.org/topojson.v1.js"></script>
+    <script src="//d3js.org/topojson.v1.min.js"></script>
+    <script src="./scripts/variables.js"></script>
     <script src="./scripts/loadTheMap.js"></script>
     <script src="./scripts/timeline.js"></script>
+    <script src="./scripts/loadTheEvent.js"></script>
     <script src="./scripts/changeTheme.js"></script>
     <script src="./scripts/mainScript.js"></script>
   </body>

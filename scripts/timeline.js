@@ -26,27 +26,10 @@ function initializeTimeline(color1 = "white", color2 = "#18202a") {
     
     let timelineRectBounding = document.getElementById("timelineRect").getBoundingClientRect()
     let lastPercent = 80 - 80*(timelineStrokeWidth/2)/timelineRectBounding.width
-
-    // List down all the major events of my life
-    let relevantEvents = {
-        "Born": ["Apr", 1995, "0%"],
-        "Pursuing primary/secondary education": ["Apr", 1999, "5%"],
-        "Graduated from secondary school": ["May", 2011, "15%"],
-        "Pursuing high school": ["Apr", 2011, "17%"],
-        "Graduated from high school": ["May", 2013, "27%"],
-        "Pursuing undergrad at DTU": ["Aug", 2013, "30%"],
-        "Summer Intern at Infosys": ["Jun", 2016, "40%"],
-        "Graduated from DTU": ["May", 2017, "45%"],
-        "Data Engineer at UHG": ["July", 2017, "50%"],
-        "Resigned from my job at UHG": ["July", 2019, "60%"],
-        "Pursuing Masters at ASU": ["Aug", 2019, "62%"],
-        "Summer Intern at Amazon": ["May", 2020, "72%"],
-        "Graduated from ASU": ["May", 2021, `${lastPercent}%`]
-    } // The percent should be at max 80
-
+    relevantEvents["Graduated from ASU"][2] = `${lastPercent}%`
 
     // What is the current event of my life
-    let currentEvent = "Pursuing Masters at ASU"
+    let currentEventTime = `${relevantEvents[currentEvent][0]} ${relevantEvents[currentEvent][1]}`
     //let totalNumberOfEvents = Object.keys(relevantEvents).length
     //let currentEventIndex = Object.keys(relevantEvents).indexOf(currentEvent)
 
@@ -91,7 +74,16 @@ function initializeTimeline(color1 = "white", color2 = "#18202a") {
     let toolTipText = toolTip.append("text")
         .text(currentEvent)
         .attr("fill", color2)
-        .attr("transform", `translate(0, 30)`)
+        .attr("id", "timelineTooltipText1")
+        .attr("transform", `translate(0, 25)`)
+        .style("font-size", 7)
+        .attr("text-anchor", "middle")
+    
+    let toolTipYear = toolTip.append("text")
+        .text(currentEventTime)
+        .attr("fill", color2)
+        .attr("id", "timelineTooltipText2")
+        .attr("transform", `translate(0, 40)`)
         .style("font-size", 7)
         .attr("text-anchor", "middle")
         
@@ -99,11 +91,12 @@ function initializeTimeline(color1 = "white", color2 = "#18202a") {
     // Add a mouseover and mousemove functionality to the timeline
     timeline.on("mouseover", function() {
         let newWidth = d3.event.x - timelineRectBounding.x
-        if(newWidth >= 0 && newWidth <= timelineRectBounding.width) {
-            
-            let currentPercent = newWidth*80/timelineRectBounding.width
-            let newText = ""
-            let oldEvent = ""
+        let currentPercent = newWidth*80/timelineRectBounding.width
+        let newText = ""
+        let oldEvent = ""
+        if(currentPercent <= 0)
+            newText = "Born"
+        else {
             Object.keys(relevantEvents).forEach(event => {
                 let percent = parseFloat(relevantEvents[event][2].replace("%",".00"))
                 if(percent >= currentPercent) {
@@ -114,21 +107,40 @@ function initializeTimeline(color1 = "white", color2 = "#18202a") {
                     oldEvent = event
                 }
             });
-            toolTipText.text(newText)
+        }
+        
+        if(newText == "")
+            newText = "Graduated from ASU"
+        toolTipText.text(newText)
+        currentEvent = newText
+        loadEvent(newText)
+        toolTipYear.text(`${relevantEvents[newText][0]} ${relevantEvents[newText][1]}`)
 
+        let tooltipNewWidth = Math.max(document.getElementById("timelineTooltipText1").getBoundingClientRect().width, document.getElementById("timelineTooltipText2").getBoundingClientRect().width)/2 + 10
+        toolTipBG.transition().duration(50).attr("d", `
+            M 0 0
+            L 10 10
+            L ${tooltipNewWidth} 10
+            L ${tooltipNewWidth} 50
+            L -${tooltipNewWidth} 50
+            L -${tooltipNewWidth} 10
+            L -10 10
+            z
+        `)
+        if(newWidth >= 0 && newWidth <= timelineRectBounding.width) {
             loadBar.transition().ease(d3.easeLinear).duration(50).attr("width", newWidth)
             toolTip.transition().ease(d3.easeLinear).duration(50).attr("transform", `translate(${loadBarXPos - timelineSVGXPos + newWidth + timelineStrokeWidth}, ${timelineHeight + 8})`)
         }
     })
     .on("mousemove", function() {
         let newWidth = d3.event.x - timelineRectBounding.x
+        let currentPercent = newWidth*80/timelineRectBounding.width
+        let newText = ""
+        let oldEvent = ""
 
-        if(newWidth >= 0 && newWidth <= timelineRectBounding.width) {
-
-            let currentPercent = newWidth*80/timelineRectBounding.width
-            console.log(currentPercent)
-            let newText = ""
-            let oldEvent = ""
+        if(currentPercent <= 0)
+            newText = "Born"
+        else {
             Object.keys(relevantEvents).forEach(event => {
                 let percent = parseFloat(relevantEvents[event][2].replace("%",".00"))
                 if(percent >= currentPercent) {
@@ -139,23 +151,26 @@ function initializeTimeline(color1 = "white", color2 = "#18202a") {
                     oldEvent = event
                 }
             });
-            toolTipText.text(newText)
+        }
 
-            loadBar.attr("width", newWidth)
-            toolTip.transition().ease(d3.easeLinear).duration(50).attr("transform", `translate(${loadBarXPos - timelineSVGXPos + newWidth + timelineStrokeWidth}, ${timelineHeight + 8})`)
-        }
-    })
-    .on("touchstart", function() {
-        d = d3.touches(this)[0][0];
-        let newWidth = d - 50
-        if(newWidth >= 0 && newWidth <= timelineRectBounding.width) {
-            loadBar.attr("width", newWidth)
-            toolTip.transition().ease(d3.easeLinear).duration(50).attr("transform", `translate(${loadBarXPos - timelineSVGXPos + newWidth + timelineStrokeWidth}, ${timelineHeight + 8})`)
-        }
-    })
-    .on("touchmove", function() {
-        d = d3.touches(this)[0][0];
-        let newWidth = d - 50
+        if(newText == "")
+            newText = "Graduated from ASU"
+        toolTipText.text(newText)
+        currentEvent = newText
+        loadEvent(newText)
+        toolTipYear.text(`${relevantEvents[newText][0]} ${relevantEvents[newText][1]}`)
+
+        let tooltipNewWidth = Math.max(document.getElementById("timelineTooltipText1").getBoundingClientRect().width, document.getElementById("timelineTooltipText2").getBoundingClientRect().width)/2 + 10
+        toolTipBG.transition().duration(50).attr("d", `
+            M 0 0
+            L 10 10
+            L ${tooltipNewWidth} 10
+            L ${tooltipNewWidth} 50
+            L -${tooltipNewWidth} 50
+            L -${tooltipNewWidth} 10
+            L -10 10
+            z
+        `)
         if(newWidth >= 0 && newWidth <= timelineRectBounding.width) {
             loadBar.attr("width", newWidth)
             toolTip.transition().ease(d3.easeLinear).duration(50).attr("transform", `translate(${loadBarXPos - timelineSVGXPos + newWidth + timelineStrokeWidth}, ${timelineHeight + 8})`)

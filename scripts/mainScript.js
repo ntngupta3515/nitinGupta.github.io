@@ -3,7 +3,7 @@ buildTheWebsite()
 function buildTheWebsite() {
 
     // Load the map
-    initializeMap()
+    loadEvent(currentEvent)
 
     // Load the timeline
     initializeTimeline()

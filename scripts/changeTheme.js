@@ -12,7 +12,9 @@ themeChangeButton.on("click", function() {
         d3.select("#topHeadingbg2").transition().delay(300).style("left", "100%")
         d3.select("#headingTitle").transition().delay(700).style("color", "white")
 
-        initializeMap("white", "#18202a")
+        primaryColor = "white"
+        secondaryColor = "#18202a"
+        initializeMap(relevantEvents[currentEvent][3], relevantEvents[currentEvent][4])
         //initializeTimeline("#18202a", "white")
 
         /*d3.select("#sortAttributeButton").style("border", "1px solid #18202a")
@@ -45,7 +47,9 @@ themeChangeButton.on("click", function() {
         d3.select("#topHeadingbg2").transition().delay(300).style("left", "0%")
         d3.select("#headingTitle").transition().delay(700).style("color", "#18202a")
 
-        initializeMap("#18202a", "white")
+        primaryColor = "#18202a"
+        secondaryColor = "white"
+        initializeMap(relevantEvents[currentEvent][3], relevantEvents[currentEvent][4])
         //initializeTimeline("white", "#18202a")
 
         /*d3.select("#sortAttributeButton").transition().delay(700).style("border-top", "1px solid white").style("border-bottom", "1px solid white").style("border-left", "1px solid white")
