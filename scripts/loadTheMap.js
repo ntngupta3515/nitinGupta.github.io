@@ -1,14 +1,23 @@
+let loadedData = null
 function initializeMap(country, state) {
-    if(state != currentState) {
+    if(state != currentState)
         currentState = state
-        updateTheColors(state)
-    }
+    updateTheColors(state)
     if(country != currentCountry) {
         currentCountry = country
         currentState = state
-        d3.json(`./data/${country}.geo.json`).then(function(data) {
-            drawMap(data)
-        })
+        if(loadedData == null) {
+            Promise.all([
+                d3.json(`./data/India.geo.json`),
+                d3.json(`./data/US.geo.json`)
+            ]).then(function(data) {
+                loadedData = [topojson.feature(data[0], data[0].objects.ne_10m_admin_1_India_Official), data[1]]
+                drawMap()
+            })
+        }
+        else {
+            drawMap()
+        }
     }
 }
 
@@ -26,15 +35,16 @@ function updateTheColors(state) {
         })
 }
 
-function drawMap(geoData) {
+function drawMap() {
     let name = "NAME"
     let coordinates = [-110.2551, 37.0902]
     if(currentCountry != "US") {
         name = "name"
         coordinates = [67.9629, 20.5937]
-        geoData = topojson.feature(geoData, geoData.objects.ne_10m_admin_1_India_Official);
+        geoData = loadedData[0]
     }
-    console.log(geoData)
+    else
+        geoData = loadedData[1]
 
     let projection = d3.geoMercator()
         .center(coordinates)
@@ -54,7 +64,7 @@ function drawMap(geoData) {
     let mapBinding =  map.selectAll("path")
         .data(geoData.features)
     
-    mapBinding.enter().append("path")
+    mapBinding.enter().append("path").transition().duration(1000)
         .attr("id", d => d.properties[name].replace(" ",""))
         .attr("d", d => geoPath(d))
         .attr("stroke", primaryColor)
@@ -66,7 +76,7 @@ function drawMap(geoData) {
         })
         .attr("stroke-width", 1.5)
 
-    mapBinding.transition().duration(300).attr("id", d => d.properties[name].replace(" ",""))
+    mapBinding.transition().duration(1000).attr("id", d => d.properties[name].replace(" ",""))
         .attr("d", d => geoPath(d))
         .attr("stroke", primaryColor)
         .attr("fill", d => {
