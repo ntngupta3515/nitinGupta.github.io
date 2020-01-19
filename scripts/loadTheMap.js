@@ -8,8 +8,8 @@ function initializeMap(country, state) {
         currentState = state
         if(loadedData == null) {
             Promise.all([
-                d3.json(`data/India.geo.json`),
-                d3.json(`data/US.geo.json`)
+                d3.json(`https://github.com/ntngupta3515/ntngupta3515.github.io/tree/master/data/India.geo.json`),
+                d3.json(`https://github.com/ntngupta3515/ntngupta3515.github.io/tree/master/data/US.geo.json`)
             ]).then(function(data) {
                 loadedData = [topojson.feature(data[0], data[0].objects.ne_10m_admin_1_India_Official), data[1]]
                 drawMap()
