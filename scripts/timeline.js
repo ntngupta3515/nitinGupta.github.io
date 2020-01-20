@@ -1,8 +1,8 @@
 function initializeTimeline(color1 = "white", color2 = "#18202a") {
 
     // Variables for quick changing the properties
-    let timelineStrokeWidth = 4
-    let timelineHeight = 23
+    let timelineStrokeWidth = 6/window.devicePixelRatio
+    let timelineHeight = 34.5/window.devicePixelRatio
     
     // Remove any SVG before recreating it
     let timelineDiv = d3.select("#timeline")
@@ -62,12 +62,12 @@ function initializeTimeline(color1 = "white", color2 = "#18202a") {
         .attr("stroke-width", 0)
         .attr("d", `
             M 0 0
-            L 10 10
-            L 50 10
-            L 50 50
-            L -50 50
-            L -50 10
-            L -10 10
+            L ${15/window.devicePixelRatio} ${15/window.devicePixelRatio}
+            L ${75/window.devicePixelRatio} ${15/window.devicePixelRatio}
+            L ${75/window.devicePixelRatio} ${75/window.devicePixelRatio}
+            L -${75/window.devicePixelRatio} ${75/window.devicePixelRatio}
+            L -${75/window.devicePixelRatio} ${15/window.devicePixelRatio}
+            L -${15/window.devicePixelRatio} ${15/window.devicePixelRatio}
             z
         `)
 
@@ -75,21 +75,21 @@ function initializeTimeline(color1 = "white", color2 = "#18202a") {
         .text(currentEvent)
         .attr("fill", color2)
         .attr("id", "timelineTooltipText1")
-        .attr("transform", `translate(0, 25)`)
-        .style("font-size", 7)
+        .attr("transform", `translate(0, ${37.5/window.devicePixelRatio})`)
+        .style("font-size", 10.5/window.devicePixelRatio)
         .attr("text-anchor", "middle")
     
     let toolTipYear = toolTip.append("text")
         .text(currentEventTime)
         .attr("fill", color2)
         .attr("id", "timelineTooltipText2")
-        .attr("transform", `translate(0, 40)`)
-        .style("font-size", 7)
+        .attr("transform", `translate(0, ${60/window.devicePixelRatio})`)
+        .style("font-size", 10.5/window.devicePixelRatio)
         .attr("text-anchor", "middle")
         
 
     // Add a mouseover and mousemove functionality to the timeline
-    timeline.on("mouseover", function() {
+    timelineSVG.on("mouseover", function() {
         let newWidth = d3.event.x - timelineRectBounding.x
         let currentPercent = newWidth*80/timelineRectBounding.width
         let newText = ""
@@ -119,12 +119,12 @@ function initializeTimeline(color1 = "white", color2 = "#18202a") {
         let tooltipNewWidth = Math.max(document.getElementById("timelineTooltipText1").getBoundingClientRect().width, document.getElementById("timelineTooltipText2").getBoundingClientRect().width)/2 + 10
         toolTipBG.transition().duration(50).attr("d", `
             M 0 0
-            L 10 10
-            L ${tooltipNewWidth} 10
-            L ${tooltipNewWidth} 50
-            L -${tooltipNewWidth} 50
-            L -${tooltipNewWidth} 10
-            L -10 10
+            L ${15/window.devicePixelRatio} ${15/window.devicePixelRatio}
+            L ${tooltipNewWidth} ${15/window.devicePixelRatio}
+            L ${tooltipNewWidth} ${75/window.devicePixelRatio}
+            L -${tooltipNewWidth} ${75/window.devicePixelRatio}
+            L -${tooltipNewWidth} ${15/window.devicePixelRatio}
+            L -${15/window.devicePixelRatio} ${15/window.devicePixelRatio}
             z
         `)
         if(newWidth >= 0 && newWidth <= timelineRectBounding.width) {
@@ -160,20 +160,20 @@ function initializeTimeline(color1 = "white", color2 = "#18202a") {
         loadEvent(newText)
         toolTipYear.text(`${relevantEvents[newText][0]} ${relevantEvents[newText][1]}`)
 
-        let tooltipNewWidth = Math.max(document.getElementById("timelineTooltipText1").getBoundingClientRect().width, document.getElementById("timelineTooltipText2").getBoundingClientRect().width)/2 + 10
+        let tooltipNewWidth = Math.max(document.getElementById("timelineTooltipText1").getBoundingClientRect().width, document.getElementById("timelineTooltipText2").getBoundingClientRect().width)/2 + 15/window.devicePixelRatio
         toolTipBG.transition().duration(50).attr("d", `
             M 0 0
-            L 10 10
-            L ${tooltipNewWidth} 10
-            L ${tooltipNewWidth} 50
-            L -${tooltipNewWidth} 50
-            L -${tooltipNewWidth} 10
-            L -10 10
+            L ${15/window.devicePixelRatio} ${15/window.devicePixelRatio}
+            L ${tooltipNewWidth} ${15/window.devicePixelRatio}
+            L ${tooltipNewWidth} ${75/window.devicePixelRatio}
+            L -${tooltipNewWidth} ${75/window.devicePixelRatio}
+            L -${tooltipNewWidth} ${15/window.devicePixelRatio}
+            L -${15/window.devicePixelRatio} ${15/window.devicePixelRatio}
             z
         `)
         if(newWidth >= 0 && newWidth <= timelineRectBounding.width) {
             loadBar.attr("width", newWidth)
-            toolTip.transition().ease(d3.easeLinear).duration(50).attr("transform", `translate(${loadBarXPos - timelineSVGXPos + newWidth + timelineStrokeWidth}, ${timelineHeight + 8})`)
+            toolTip.transition().ease(d3.easeLinear).duration(50).attr("transform", `translate(${loadBarXPos - timelineSVGXPos + newWidth + timelineStrokeWidth}, ${timelineHeight + 12/window.devicePixelRatio})`)
         }
     })
 
@@ -187,16 +187,16 @@ function initializeTimeline(color1 = "white", color2 = "#18202a") {
             .attr("id", `tick${relevantEvents[key][0]}${relevantEvents[key][1]%100}`)
             .attr("x", `${relevantEvents[key][2]}`)
             .attr("y", `0`)
-            .attr("height", `5`)
-            .attr("width", `2`)
+            .attr("height", 7.5/window.devicePixelRatio)
+            .attr("width", 3/window.devicePixelRatio)
         
         let tickX = document.getElementById(`tick${relevantEvents[key][0]}${relevantEvents[key][1]%100}`).getBoundingClientRect().x
 
         ticksGroup.append("text")
             .text(time)
             .attr("fill", "white")
-            .attr("transform", `translate(${tickX - (loadBarXPos - timelineStrokeWidth/2) + 4}, 30) rotate(-90)`)
-            .style("font-size", 8)
+            .attr("transform", `translate(${tickX - (loadBarXPos - timelineStrokeWidth/2) + 4}, ${45/window.devicePixelRatio}) rotate(-90)`)
+            .style("font-size", 12/window.devicePixelRatio)
             .attr("text-anchor", "middle")
 
     });

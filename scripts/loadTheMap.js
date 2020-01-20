@@ -37,7 +37,7 @@ function updateTheColors(state) {
 
 function drawMap() {
     let name = "NAME"
-    let coordinates = [-110.2551, 37.0902]
+    let coordinates = [-95.7129, 37.0902]
     if(currentCountry != "US") {
         name = "name"
         coordinates = [67.9629, 20.5937]
@@ -48,7 +48,7 @@ function drawMap() {
 
     let projection = d3.geoMercator()
         .center(coordinates)
-        .scale(600)
+        .scale(900/window.devicePixelRatio)
 
     // Creating a map generator
     let geoPath = d3.geoPath()
@@ -74,7 +74,7 @@ function drawMap() {
             }
             return "none"
         })
-        .attr("stroke-width", 1.5)
+        .attr("stroke-width", 2.25/window.devicePixelRatio)
 
     mapBinding.transition().duration(1000).attr("id", d => d.properties[name].replace(/ /g,""))
         .attr("d", d => geoPath(d))
@@ -85,7 +85,7 @@ function drawMap() {
             }
             return "none"
         })
-        .attr("stroke-width", 1.5)
+        .attr("stroke-width", 2.25/window.devicePixelRatio)
 
     mapBinding.exit().remove()
     
@@ -97,5 +97,5 @@ function drawMap() {
         .attr("fill", secondaryColor)
         .attr("cx", currentStateX)
         .attr("cy", currentStateY)
-        .attr('r', 3)
+        .attr('r', 4.5/window.devicePixelRatio)
 }
