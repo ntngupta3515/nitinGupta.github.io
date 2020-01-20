@@ -76,7 +76,7 @@ function drawMap() {
         })
         .attr("stroke-width", 1.5)
 
-    mapBinding.transition().duration(1000).attr("id", d => d.properties[name].replace(" ",""))
+    mapBinding.transition().duration(1000).attr("id", d => d.properties[name].replace(/ /g,""))
         .attr("d", d => geoPath(d))
         .attr("stroke", primaryColor)
         .attr("fill", d => {
@@ -88,4 +88,14 @@ function drawMap() {
         .attr("stroke-width", 1.5)
 
     mapBinding.exit().remove()
+    
+    let currentStateBounding = document.getElementById(currentState.replace(/ /g, "")).getBoundingClientRect()
+    let currentStateX = currentStateBounding.x + currentStateBounding.width/2
+    let currentStateY = currentStateBounding.y + currentStateBounding.height/2
+    mapSVG.selectAll("circle").remove()
+    mapSVG.append("circle")
+        .attr("fill", secondaryColor)
+        .attr("cx", currentStateX)
+        .attr("cy", currentStateY)
+        .attr('r', 3)
 }
