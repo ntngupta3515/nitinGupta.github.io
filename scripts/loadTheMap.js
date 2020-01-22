@@ -37,10 +37,12 @@ function updateTheColors(state) {
 
 function drawMap() {
     let name = "NAME"
-    let coordinates = [-95.7129, 37.0902]
+    let coordinates = [-78.7129, 34.0902]
+    let scale = 880
     if(currentCountry != "US") {
         name = "name"
-        coordinates = [67.9629, 20.5937]
+        scale = 890
+        coordinates = [97.9629, 17.5937]
         geoData = loadedData[0]
     }
     else
@@ -48,7 +50,7 @@ function drawMap() {
 
     let projection = d3.geoMercator()
         .center(coordinates)
-        .scale(900/window.devicePixelRatio)
+        .scale(scale/window.devicePixelRatio)
 
     // Creating a map generator
     let geoPath = d3.geoPath()
@@ -59,6 +61,7 @@ function drawMap() {
     })
         
     let mapSVG = d3.select("#mainMapSVG")
+    let mapSVGbounding = document.getElementById("mainMapSVG").getBoundingClientRect()
     let map = mapSVG.select("g")
 
     let mapBinding =  map.selectAll("path")

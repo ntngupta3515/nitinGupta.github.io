@@ -24,6 +24,7 @@ function initializeStyle() {
     changeStyle("#footer", "border-top-width")
     changeStyle("#timeline", "height")
     d3.select("#mainMap").style("height", `calc(100% - ${parseFloat(d3.select("#topHeading").style("height").replace("px",'')) + parseFloat(d3.select("#footer").style("padding-top").replace("px",'')) + parseFloat(d3.select("#timeline").style("height").replace("px",''))}px)`)
+    d3.select("#mainContent").style("height", `calc(100% - ${parseFloat(d3.select("#topHeading").style("height").replace("px",'')) + parseFloat(d3.select("#footer").style("padding-top").replace("px",'')) + parseFloat(d3.select("#timeline").style("height").replace("px",''))}px)`)
     d3.select("#headingTitle").style("left", `calc(50% - ${45/window.devicePixelRatio}px`)
 
 }
